@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package com.example.android.trackmysleepquality.note
+package com.example.android.trackmysleepquality.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+@Entity(tableName = "note_table")
 data class Note(
+        @PrimaryKey(autoGenerate = true)
         var id: Long = 0L,
+
+        @ColumnInfo(name = "text")
         var text: String = ""
 )

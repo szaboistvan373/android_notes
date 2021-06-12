@@ -17,7 +17,6 @@
 package com.example.android.trackmysleepquality.note
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.text.InputType
 import android.view.LayoutInflater
@@ -29,6 +28,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.R
+import com.example.android.trackmysleepquality.database.Note
 import com.example.android.trackmysleepquality.databinding.ListItemNoteBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,20 +38,7 @@ import kotlinx.coroutines.withContext
 private val ITEM_VIEW_TYPE_HEADER = 0
 private val ITEM_VIEW_TYPE_ITEM = 1
 
-fun showdialog(context: FragmentActivity?, listener: (String) -> Unit) {
-    val builder: AlertDialog.Builder = android.app.AlertDialog.Builder(context)
-    builder.setTitle("Title")
 
-    val input = EditText(context)
-    input.setHint("Enter Text")
-    input.inputType = InputType.TYPE_CLASS_TEXT
-    builder.setView(input)
-
-    builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which -> listener.invoke(input.text.toString()) })
-    builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
-
-    builder.show()
-}
 
 class NotesAdapter(val clickListener: NotesListener) : ListAdapter<DataItem,
         RecyclerView.ViewHolder>(NoteDiffCallback()) {

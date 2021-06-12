@@ -16,14 +16,45 @@
 
 package com.example.android.trackmysleepquality.note
 
+import android.content.Context
 import androidx.lifecycle.*
-import com.example.android.trackmysleepquality.database.SleepDatabaseDao
-import com.example.android.trackmysleepquality.database.SleepNight
+import com.example.android.trackmysleepquality.database.Note
+import com.example.android.trackmysleepquality.database.NoteDatabaseDao
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class NotesViewModel: ViewModel() {
+//class NotesViewModel(private val context: Context, private val database: NoteDatabaseDao): ViewModel() {
+//
+//    val notes: MutableLiveData<List<Note>> = MutableLiveData<List<Note>>(listOf<Note>(Note(1, "asd"), Note(2, "asdasda")))
+//
+//    fun onAdd() {
+//
+//        showDialog(context) { a -> println(a) }
+////        database.insert(Note(text = "asd"))
+//    }
 
-    val notes: MutableLiveData<List<Note>> = MutableLiveData<List<Note>>(listOf<Note>(Note(1, "asd"), Note(2, "asdasda")))
+class NotesViewModel(private val context: Context, private val database: NoteDatabaseDao) :
+    ViewModel() {
 
+    val notes: MutableLiveData<List<Note>> =
+        MutableLiveData<List<Note>>(listOf<Note>(Note(1, "asd"), Note(2, "asdasda")))
+
+    fun onAdd() {
+        showDialog1(context) { a ->
+            viewModelScope.launch {
+                add(a)
+            }
+        }
+    }
+
+    private suspend fun add(value: String) {
+        withContext(Dispatchers.IO) {
+            println(value)
+            database.insert(Note(text = value))
+            Transformations.map(database.getAllNotes()) { notes -> notes.forEach { println(it.text) } }
+        }
+    }
 }
 
  

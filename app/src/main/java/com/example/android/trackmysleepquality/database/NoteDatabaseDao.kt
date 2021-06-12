@@ -14,15 +14,30 @@
  * limitations under the License.
  */
 
-package com.example.android.trackmysleepquality.note
+package com.example.android.trackmysleepquality.database
 
-import android.widget.TextView
-import androidx.databinding.BindingAdapter
-import com.example.android.trackmysleepquality.database.Note
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 
-@BindingAdapter("noteText")
-fun TextView.setNoteText(item: Note?) {
-    item?.let {
-        text = it.text
-    }
+@Dao
+interface NoteDatabaseDao {
+
+    @Insert
+    suspend fun insert(note: Note)
+
+    @Update
+    suspend fun update(note: Note)
+
+    @Query("DELETE FROM note_table WHERE id = :key")
+    suspend fun delete(key: Long)
+
+    @Query("SELECT * FROM note_table")
+    fun getAllNotes(): LiveData<List<Note>>
+
+    @Query("SELECT * from note_table WHERE id = :key")
+    fun getNoteWithId(key: Long): LiveData<Note>
 }
+

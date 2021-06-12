@@ -16,20 +16,17 @@
 
 package com.example.android.trackmysleepquality.note
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.trackmysleepquality.R
+import com.example.android.trackmysleepquality.database.NoteDatabase
 import com.example.android.trackmysleepquality.databinding.FragmentNotesBinding
 
 
@@ -44,8 +41,10 @@ class NotesFragment : Fragment() {
 
         val application = requireNotNull(this.activity).application
 
+        val dataSource = NoteDatabase.getInstance(application).noteDatabaseDao
+
         // Create an instance of the ViewModel Factory.
-        val viewModelFactory = NotesViewModelFactory()
+        val viewModelFactory = NotesViewModelFactory(requireNotNull(activity), dataSource)
 
         // Get a reference to the ViewModel associated with this fragment.
         val notesViewModel =
@@ -64,7 +63,7 @@ class NotesFragment : Fragment() {
         binding.notesList.layoutManager = manager
 
         val adapter = NotesAdapter(NotesListener { noteId ->
-            showdialog(activity) { a -> println(a) }
+            showDialog1(activity, ::println)
         })
         binding.notesList.adapter = adapter
 
@@ -73,6 +72,10 @@ class NotesFragment : Fragment() {
                 adapter.addHeaderAndSubmitList(it)
             }
         })
+//
+//        binding.floatingActionButton.setOnClickListener{ view ->
+//            showdialog(activity) { a -> println(a) }
+//        }
 
         return binding.root
     }
