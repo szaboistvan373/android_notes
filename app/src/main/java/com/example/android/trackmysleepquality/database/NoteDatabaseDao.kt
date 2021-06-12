@@ -17,10 +17,7 @@
 package com.example.android.trackmysleepquality.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
 @Dao
 interface NoteDatabaseDao {
@@ -39,5 +36,9 @@ interface NoteDatabaseDao {
 
     @Query("SELECT * from note_table WHERE id = :key")
     fun getNoteWithId(key: Long): LiveData<Note>
+
+    @Transaction
+    @Query("SELECT * FROM note_table")
+    fun getNotesWithChildNotes(): List<NoteWithNotes>
 }
 

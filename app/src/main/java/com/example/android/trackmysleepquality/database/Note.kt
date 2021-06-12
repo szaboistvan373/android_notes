@@ -16,9 +16,7 @@
 
 package com.example.android.trackmysleepquality.database
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(tableName = "note_table")
 data class Note(
@@ -26,5 +24,8 @@ data class Note(
         var id: Long = 0L,
 
         @ColumnInfo(name = "text")
-        var text: String = ""
+        var text: String,
+
+        @ColumnInfo(name = "parentId")
+        var parentId: Long?
 )

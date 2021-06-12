@@ -40,8 +40,10 @@ class NotesViewModel(private val context: Context, private val database: NoteDat
     val notes: MutableLiveData<List<Note>> =
         MutableLiveData<List<Note>>(listOf<Note>(Note(1, "asd"), Note(2, "asdasda")))
 
+    val dbNotes = database.getAllNotes()
+
     fun onAdd() {
-        showDialog1(context) { a ->
+        showDialog(context) { a ->
             viewModelScope.launch {
                 add(a)
             }
@@ -49,10 +51,13 @@ class NotesViewModel(private val context: Context, private val database: NoteDat
     }
 
     private suspend fun add(value: String) {
+        showDialog(context) { a ->
+            viewModelScope.launch {
+                add(a)
+            }
+        }
         withContext(Dispatchers.IO) {
-            println(value)
-            database.insert(Note(text = value))
-            Transformations.map(database.getAllNotes()) { notes -> notes.forEach { println(it.text) } }
+            database.insert(Note(text = value, parentId = null))
         }
     }
 }

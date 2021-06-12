@@ -63,11 +63,11 @@ class NotesFragment : Fragment() {
         binding.notesList.layoutManager = manager
 
         val adapter = NotesAdapter(NotesListener { noteId ->
-            showDialog1(activity, ::println)
+            showDialog(activity, ::println)
         })
         binding.notesList.adapter = adapter
 
-        notesViewModel.notes.observe(viewLifecycleOwner, Observer {
+        notesViewModel.dbNotes.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.addHeaderAndSubmitList(it)
             }
