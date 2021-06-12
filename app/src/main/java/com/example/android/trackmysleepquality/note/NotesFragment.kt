@@ -62,9 +62,7 @@ class NotesFragment : Fragment() {
 
         binding.notesList.layoutManager = manager
 
-        val adapter = NotesAdapter(NotesListener { noteId ->
-//            showDialog(activity, ::println)
-        })
+        val adapter = NotesAdapter(NotesListener(notesViewModel::onNoteClicked))
         binding.notesList.adapter = adapter
 
         notesViewModel.dbNotes.observe(viewLifecycleOwner, Observer {

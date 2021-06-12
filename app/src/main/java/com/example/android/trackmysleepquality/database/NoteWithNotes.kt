@@ -18,7 +18,6 @@ package com.example.android.trackmysleepquality.database
 
 import androidx.room.*
 
-@Entity
 data class NoteWithNotes(
         @Embedded
         val note: Note,
@@ -27,5 +26,5 @@ data class NoteWithNotes(
                 parentColumn = "id",
                 entityColumn = "parentId"
         )
-        val notes: List<Note>
+        var notes: List<Note>
 )

@@ -40,10 +40,16 @@ class NotesViewModel(private val context: Context, private val database: NoteDat
     val dbNotes = database.getAllNotes()
 
     fun onAdd() {
-        showDialog(context) { a ->
+        showDialog1(context) { a ->
             viewModelScope.launch {
                 add(a)
             }
+        }
+    }
+
+    fun onNoteClicked(id: Long) {
+        viewModelScope.launch {
+            asdasdasd(id)
         }
     }
 
@@ -52,6 +58,23 @@ class NotesViewModel(private val context: Context, private val database: NoteDat
             database.insert(Note(text = value, parentId = null))
         }
     }
+
+    private suspend fun asdasdasd(id: Long) {
+        withContext(Dispatchers.IO) {
+            val note = database.getNoteWithId(id) ?: return@withContext
+            note.notes += Note(text = "child cucc", parentId = note.id)
+            database.updateNoteWithNotes(note)
+            val noteWithNotes = database.getNoteWithNotes(note.id)
+            println("asd")
+//            database.update()
+//            database.update(noteWithChildWithId)
+        }
+    }
+
+//    private suspend fun noteClicked(id: Long) {
+//        withContext(Dispatchers.IO) {
+//        }
+//    }
 }
 
  

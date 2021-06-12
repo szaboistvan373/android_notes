@@ -18,27 +18,57 @@ package com.example.android.trackmysleepquality.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.room.OnConflictStrategy.IGNORE
 
 @Dao
-interface NoteDatabaseDao {
+abstract class NoteDatabaseDao {
 
-    @Insert
-    suspend fun insert(note: Note)
+    @Insert(onConflict = IGNORE)
+    abstract suspend fun insert(note: Note)
 
     @Update
-    suspend fun update(note: Note)
+    abstract suspend fun update(note: Note)
 
     @Query("DELETE FROM note_table WHERE id = :key")
-    suspend fun delete(key: Long)
+    abstract suspend fun delete(key: Long)
 
     @Query("SELECT * FROM note_table")
-    fun getAllNotes(): LiveData<List<Note>>
+    abstract fun getAllNotes(): LiveData<List<Note>>
 
     @Query("SELECT * from note_table WHERE id = :key")
-    fun getNoteWithId(key: Long): LiveData<Note>
+    abstract fun getNoteWithId(key: Long): Note?
 
-    @Transaction
-    @Query("SELECT * FROM note_table")
-    fun getNotesWithChildNotes(): List<NoteWithNotes>
+    @Query("SELECT * from note_table WHERE parentId = :parentId")
+    abstract fun getNotesWithParentId(parentId: Long): List<Note>
+//
+//    @Transaction
+//    @Query("SELECT * from note_table WHERE id = :key LIMIT 1")
+//    abstract suspend fun getNoteWithChildWithId(key: Long): NoteWithNotes?
+
+    suspend fun updateNoteWithNotes(note: Note) {
+        val notes = note.notes
+        for (i in notes.indices) {
+            notes[i].parentId = note.id
+            insert(notes[i])
+        }
+    }
+
+    suspend fun getNoteWithNotes(key: Long): Note? {
+        // TODO: multi level
+        val note = getNoteWithId(key) ?: return null
+        note.notes = getNotesWithParentId(key)
+        return note
+    }
+
+//    fun getUserWithPets(id: Int): User? {
+//        val user: User = getUser(id)
+//        val pets: List<Pet> = getPetList(id)
+//        user.setPetList(pets)
+//        return user
+//    }
+
+//    @Transaction
+//    @Query("SELECT * FROM note_table")
+//    fun getNotesWithChildNotes(): List<NoteWithNotes>
 }
 

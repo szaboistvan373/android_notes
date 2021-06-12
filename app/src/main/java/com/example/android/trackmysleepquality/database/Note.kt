@@ -19,7 +19,7 @@ package com.example.android.trackmysleepquality.database
 import androidx.room.*
 
 @Entity(tableName = "note_table")
-data class Note(
+class Note(
         @PrimaryKey(autoGenerate = true)
         var id: Long = 0L,
 
@@ -28,4 +28,7 @@ data class Note(
 
         @ColumnInfo(name = "parentId")
         var parentId: Long?
-)
+) {
+        @Ignore
+        var notes: List<Note> = emptyList()
+}

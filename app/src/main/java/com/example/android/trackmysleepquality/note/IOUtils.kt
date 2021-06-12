@@ -6,7 +6,7 @@ import android.text.InputType
 import android.widget.EditText
 import androidx.fragment.app.FragmentActivity
 
-fun showDialog(context: Context?, listener: (String) -> Unit) {
+fun showDialog1(context: Context?, listener: (String) -> Unit) {
     val builder = AlertDialog.Builder(context)
     builder.setTitle("Title")
 
