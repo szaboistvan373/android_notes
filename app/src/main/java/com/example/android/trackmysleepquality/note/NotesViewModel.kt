@@ -37,9 +37,6 @@ import kotlinx.coroutines.withContext
 class NotesViewModel(private val context: Context, private val database: NoteDatabaseDao) :
     ViewModel() {
 
-    val notes: MutableLiveData<List<Note>> =
-        MutableLiveData<List<Note>>(listOf<Note>(Note(1, "asd"), Note(2, "asdasda")))
-
     val dbNotes = database.getAllNotes()
 
     fun onAdd() {
@@ -51,11 +48,6 @@ class NotesViewModel(private val context: Context, private val database: NoteDat
     }
 
     private suspend fun add(value: String) {
-        showDialog(context) { a ->
-            viewModelScope.launch {
-                add(a)
-            }
-        }
         withContext(Dispatchers.IO) {
             database.insert(Note(text = value, parentId = null))
         }
