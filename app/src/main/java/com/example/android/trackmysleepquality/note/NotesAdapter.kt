@@ -38,7 +38,7 @@ import kotlinx.coroutines.withContext
 private val ITEM_VIEW_TYPE_HEADER = 0
 private val ITEM_VIEW_TYPE_ITEM = 1
 
-fun showdialog(context: FragmentActivity?): String{
+fun showdialog(context: FragmentActivity?, listener: (String) -> Unit) {
     val builder: AlertDialog.Builder = android.app.AlertDialog.Builder(context)
     builder.setTitle("Title")
 
@@ -47,20 +47,10 @@ fun showdialog(context: FragmentActivity?): String{
     input.inputType = InputType.TYPE_CLASS_TEXT
     builder.setView(input)
 
-    var m_Text = ""
-
-    builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
-        // Here you get get input text from the Edittext
-        m_Text = input.text.toString()
-        println(m_Text)
-    })
+    builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which -> listener.invoke(input.text.toString()) })
     builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
 
     builder.show()
-
-    println(m_Text)
-
-    return m_Text
 }
 
 class NotesAdapter(val clickListener: NotesListener) : ListAdapter<DataItem,

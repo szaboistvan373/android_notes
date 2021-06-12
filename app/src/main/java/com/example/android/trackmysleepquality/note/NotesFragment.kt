@@ -64,8 +64,7 @@ class NotesFragment : Fragment() {
         binding.notesList.layoutManager = manager
 
         val adapter = NotesAdapter(NotesListener { noteId ->
-            println(showdialog(activity))
-            println(noteId)
+            showdialog(activity) { a -> println(a) }
         })
         binding.notesList.adapter = adapter
 
