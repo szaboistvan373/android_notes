@@ -8,7 +8,7 @@
     <data>
         <variable
             name="sleepDetailViewModel"
-            type="com.example.android.trackmysleepquality.sleepdetail.SleepDetailViewModel" />
+            type="com.example.android.keeptrack.sleepdetail.SleepDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

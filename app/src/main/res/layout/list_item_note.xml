@@ -8,11 +8,11 @@
 
         <variable
             name="note"
-            type="com.example.android.trackmysleepquality.database.Note" />
+            type="com.example.android.keeptrack.database.Note" />
 
         <variable
             name="clickListener"
-            type="com.example.android.trackmysleepquality.note.NotesListener" />
+            type="com.example.android.keeptrack.note.NotesListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

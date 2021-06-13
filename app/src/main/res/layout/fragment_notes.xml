@@ -26,7 +26,7 @@
 
         <variable
             name="notesViewModel"
-            type="com.example.android.trackmysleepquality.note.NotesViewModel" />
+            type="com.example.android.keeptrack.note.NotesViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
