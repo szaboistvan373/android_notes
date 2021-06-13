@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.HeaderViewListAdapter
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -48,7 +49,7 @@ class NotesAdapter(val clickListener: NotesListener) : ListAdapter<DataItem,
 
     fun addHeaderAndSubmitList(parentText: String?, list: List<Note>?) {
         adapterScope.launch {
-            val header = DataItem.Header
+            val header = DataItem.Header(parentText)
             val items = when (list) {
                 null -> {
                     listOf(header)
@@ -64,8 +65,12 @@ class NotesAdapter(val clickListener: NotesListener) : ListAdapter<DataItem,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> {
-                val nightItem = getItem(position) as DataItem.NoteItem
-                holder.bind(clickListener, nightItem.note)
+                val item = getItem(position) as DataItem.NoteItem
+                holder.bind(clickListener, item.note)
+            }
+            is TextViewHolder -> {
+                val nightItem = getItem(position) as DataItem.Header
+                holder.bind("${nightItem.parentText ?: "Root"} context")
             }
         }
     }
@@ -78,15 +83,33 @@ class NotesAdapter(val clickListener: NotesListener) : ListAdapter<DataItem,
         }
     }
 
-    class TextViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        companion object {
-            fun from(parent: ViewGroup): TextViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.header, parent, false)
-                return TextViewHolder(view)
+//    class TextViewHolder(binding: Binding) : RecyclerView.ViewHolder(binding.root) { {
+//        companion object {
+//            fun from(parent: ViewGroup): TextViewHolder {
+//                val layoutInflater = LayoutInflater.from(parent.context)
+//                val view = layoutInflater.inflate(R.layout.header, parent, false)
+//                return TextViewHolder(view)
+//            }
+//        }
+//    }
+
+        class TextViewHolder private constructor(val binding: HeaderBinding) :
+            RecyclerView.ViewHolder(binding.root) {
+
+            fun bind(text: String) {
+                binding.asdasdasd = text
+                binding.executePendingBindings()
+            }
+
+            companion object {
+                fun from(parent: ViewGroup): TextViewHolder {
+                    val layoutInflater = LayoutInflater.from(parent.context)
+                    val binding = HeaderBinding.inflate(layoutInflater, parent, false)
+
+                    return TextViewHolder(binding)
+                }
             }
         }
-    }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
@@ -140,7 +163,7 @@ sealed class DataItem {
         override val id = note.id
     }
 
-    object Header : DataItem() {
+    data class Header(val parentText: String?) : DataItem() {
         override val id = Long.MIN_VALUE
     }
 

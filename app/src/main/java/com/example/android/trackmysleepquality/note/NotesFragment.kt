@@ -75,8 +75,7 @@ class NotesFragment : Fragment() {
 
         notesViewModel.dbNotes.observe(viewLifecycleOwner, Observer {
             it?.let {
-                // notesViewModel.getNote().value!!.text
-                adapter.addHeaderAndSubmitList(null, it)
+                adapter.addHeaderAndSubmitList(notesViewModel.note?.text, it)
             }
         })
 

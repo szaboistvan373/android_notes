@@ -17,7 +17,7 @@
 <resources>
 
     <!-- App title and fragment titles -->
-    <string name="app_name">Track my notes</string>
+    <string name="app_name">Keep track</string>
     <string name="sleep_tracker_fragment">SleepTrackerFragment</string>
     <string name="sleep_quality_fragment">SleepQualityFragment</string>
 

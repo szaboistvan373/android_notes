@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+
         <variable
-            name="text"
+            name="asdasdasd"
             type="String" />
     </data>
 
@@ -13,6 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="@{text}"
+        android:text="@{asdasdasd}"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 </layout>
