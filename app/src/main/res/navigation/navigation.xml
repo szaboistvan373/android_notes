@@ -74,9 +74,12 @@
         android:name="com.example.android.trackmysleepquality.note.NotesFragment"
         android:label="fragment_notes"
         tools:layout="@layout/fragment_notes" >
+        <argument
+            android:name="noteKey"
+            app:argType="long" />
         <action
-            android:id="@+id/action_notesFragment_to_sleepQualityFragment"
-            app:destination="@id/sleep_quality_fragment"
+            android:id="@+id/action_notesFragment_to_notesFragment"
+            app:destination="@id/notes_fragment"
             app:enterAnim="@anim/slide_in_right"
             app:popEnterAnim="@anim/slide_in_right" />
     </fragment>

@@ -24,10 +24,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.NoteDatabase
 import com.example.android.trackmysleepquality.databinding.FragmentNotesBinding
+import com.example.android.trackmysleepquality.sleepquality.SleepQualityFragmentArgs
+import com.example.android.trackmysleepquality.sleeptracker.SleepTrackerFragmentDirections
 
 
 class NotesFragment : Fragment() {
@@ -43,8 +46,13 @@ class NotesFragment : Fragment() {
 
         val dataSource = NoteDatabase.getInstance(application).noteDatabaseDao
 
+        var noteKey: Long? = null
+        if (arguments != null) {
+            noteKey = NotesFragmentArgs.fromBundle(arguments!!).noteKey
+        }
+
         // Create an instance of the ViewModel Factory.
-        val viewModelFactory = NotesViewModelFactory(null, requireNotNull(activity), dataSource)
+        val viewModelFactory = NotesViewModelFactory(noteKey, requireNotNull(activity), dataSource)
 
         // Get a reference to the ViewModel associated with this fragment.
         val notesViewModel =
@@ -70,10 +78,16 @@ class NotesFragment : Fragment() {
                 adapter.addHeaderAndSubmitList(it)
             }
         })
-//
-//        binding.floatingActionButton.setOnClickListener{ view ->
-//            showdialog(activity) { a -> println(a) }
-//        }
+
+        notesViewModel.navigateToNote.observe(viewLifecycleOwner, Observer { id ->
+            id?.let {
+
+                this.findNavController().navigate(
+                    NotesFragmentDirections
+                        .actionNotesFragmentToNotesFragment(id))
+                notesViewModel.onNoteNavigated()
+            }
+        })
 
         return binding.root
     }

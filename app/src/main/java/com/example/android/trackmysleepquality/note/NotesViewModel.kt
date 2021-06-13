@@ -43,6 +43,18 @@ class NotesViewModel(
 
     val dbNotes = database.getNotesWithParentIdLazily(noteKey)
 
+    private val _navigateToNote = MutableLiveData<Long>()
+    val navigateToNote
+        get() = _navigateToNote
+
+    fun onNoteClicked(id: Long) {
+        _navigateToNote.value = id
+    }
+
+    fun onNoteNavigated() {
+        _navigateToNote.value = null
+    }
+
     fun onAdd() {
         showDialog1(context) { a ->
             viewModelScope.launch {
@@ -51,7 +63,7 @@ class NotesViewModel(
         }
     }
 
-    fun onNoteClicked(id: Long) {
+    fun onNoteClickedOld(id: Long) {
         viewModelScope.launch {
             asdasdasd(id)
         }
