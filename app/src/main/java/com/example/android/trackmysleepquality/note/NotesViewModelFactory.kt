@@ -28,11 +28,11 @@ import com.example.android.trackmysleepquality.database.SleepDatabaseDao
  *
  * Provides the key for the night and the SleepDatabaseDao to the ViewModel.
  */
-class NotesViewModelFactory(private val context: Context, private val database: NoteDatabaseDao) : ViewModelProvider.Factory {
+class NotesViewModelFactory(private val noteKey: Long?, private val context: Context, private val database: NoteDatabaseDao) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(NotesViewModel::class.java)) {
-            return NotesViewModel(context, database) as T
+            return NotesViewModel(noteKey, context, database) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

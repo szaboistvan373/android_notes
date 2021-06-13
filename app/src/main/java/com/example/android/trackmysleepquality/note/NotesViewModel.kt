@@ -34,10 +34,14 @@ import kotlinx.coroutines.withContext
 ////        database.insert(Note(text = "asd"))
 //    }
 
-class NotesViewModel(private val context: Context, private val database: NoteDatabaseDao) :
+class NotesViewModel(
+    private val noteKey: Long?,
+    private val context: Context,
+    private val database: NoteDatabaseDao
+) :
     ViewModel() {
 
-    val dbNotes = database.getAllNotes()
+    val dbNotes = database.getNotesWithParentIdLazily(noteKey)
 
     fun onAdd() {
         showDialog1(context) { a ->

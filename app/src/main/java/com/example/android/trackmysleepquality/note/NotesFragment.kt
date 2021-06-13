@@ -44,7 +44,7 @@ class NotesFragment : Fragment() {
         val dataSource = NoteDatabase.getInstance(application).noteDatabaseDao
 
         // Create an instance of the ViewModel Factory.
-        val viewModelFactory = NotesViewModelFactory(requireNotNull(activity), dataSource)
+        val viewModelFactory = NotesViewModelFactory(null, requireNotNull(activity), dataSource)
 
         // Get a reference to the ViewModel associated with this fragment.
         val notesViewModel =
