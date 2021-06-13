@@ -71,7 +71,7 @@ class NotesViewModel(
 
     private suspend fun add(value: String) {
         withContext(Dispatchers.IO) {
-            database.insert(Note(text = value, parentId = null))
+            database.insert(Note(text = value, parentId = noteKey))
         }
     }
 

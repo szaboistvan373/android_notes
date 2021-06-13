@@ -47,10 +47,12 @@ class NotesAdapter(val clickListener: NotesListener) : ListAdapter<DataItem,
 
     fun addHeaderAndSubmitList(list: List<Note>?) {
         adapterScope.launch {
-            list?.let {
-                withContext(Dispatchers.Main) {
-                    submitList(list.map { DataItem.NoteItem(it) })
-                }
+            val items = when (list) {
+                null -> listOf(DataItem.Header)
+                else -> listOf(DataItem.Header) + list.map { DataItem.NoteItem(it) }
+            }
+            withContext(Dispatchers.Main) {
+                submitList(items)
             }
         }
     }
