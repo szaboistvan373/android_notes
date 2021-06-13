@@ -20,6 +20,7 @@ import android.content.Context
 import androidx.lifecycle.*
 import com.example.android.trackmysleepquality.database.Note
 import com.example.android.trackmysleepquality.database.NoteDatabaseDao
+import com.example.android.trackmysleepquality.database.SleepNight
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -42,6 +43,16 @@ class NotesViewModel(
     ViewModel() {
 
     val dbNotes = database.getNotesWithParentIdLazily(noteKey)
+
+    private val note = MediatorLiveData<Note?>()
+
+    fun getNote() = note
+
+    init {
+        if (noteKey != null) {
+            note.addSource(database.getNoteWithIdLazily(noteKey!!), note::setValue)
+        }
+    }
 
     private val _navigateToNote = MutableLiveData<Long>()
     val navigateToNote

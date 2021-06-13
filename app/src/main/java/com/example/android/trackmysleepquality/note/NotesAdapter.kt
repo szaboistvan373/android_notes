@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.Note
+import com.example.android.trackmysleepquality.databinding.HeaderBinding
 import com.example.android.trackmysleepquality.databinding.ListItemNoteBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,11 +46,14 @@ class NotesAdapter(val clickListener: NotesListener) : ListAdapter<DataItem,
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun addHeaderAndSubmitList(list: List<Note>?) {
+    fun addHeaderAndSubmitList(parentText: String?, list: List<Note>?) {
         adapterScope.launch {
+            val header = DataItem.Header
             val items = when (list) {
-                null -> listOf(DataItem.Header)
-                else -> listOf(DataItem.Header) + list.map { DataItem.NoteItem(it) }
+                null -> {
+                    listOf(header)
+                }
+                else -> listOf(header) + list.map { DataItem.NoteItem(it) }
             }
             withContext(Dispatchers.Main) {
                 submitList(items)

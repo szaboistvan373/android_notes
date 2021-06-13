@@ -38,6 +38,9 @@ abstract class NoteDatabaseDao {
     @Query("SELECT * from note_table WHERE id = :key")
     abstract fun getNoteWithId(key: Long): Note?
 
+    @Query("SELECT * from note_table WHERE id = :key")
+    abstract fun getNoteWithIdLazily(key: Long): LiveData<Note>
+
     @Query("SELECT * from note_table WHERE parentId = :parentId or (:parentId is null and parentId is null)")
     abstract fun getNotesWithParentId(parentId: Long?): List<Note>
 
