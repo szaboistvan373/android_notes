@@ -15,7 +15,7 @@ class NotesViewModel(
 ) :
     ViewModel() {
 
-    val dbNotes = database.getNotesWithParentIdLazily(noteKey)
+    val dbNotes = database.getNotesWithParentId(noteKey)
 
     var note: Note? = null
 
@@ -27,7 +27,7 @@ class NotesViewModel(
 
     private suspend fun asd() {
         withContext(Dispatchers.IO) {
-            note = if (noteKey != null) database.getNoteWithId(noteKey) else null
+            note = if (noteKey != null) database.getNoteWithIdEagerly(noteKey) else null
         }
     }
 
