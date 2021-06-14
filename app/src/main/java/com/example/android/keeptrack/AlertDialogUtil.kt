@@ -5,12 +5,15 @@ import android.content.Context
 import android.text.InputType
 import android.widget.EditText
 
-fun showDialog(context: Context?, listener: (String) -> Unit) {
+fun showDialog(context: Context?, text: String? = null, listener: (String) -> Unit) {
     val builder = AlertDialog.Builder(context)
     builder.setTitle("Title")
 
     val input = EditText(context)
     input.hint = "Enter Text"
+    text?.let {
+        input.setText(it)
+    }
     input.inputType = InputType.TYPE_CLASS_TEXT
     builder.setView(input)
 

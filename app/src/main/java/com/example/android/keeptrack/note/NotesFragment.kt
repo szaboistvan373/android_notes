@@ -70,6 +70,12 @@ class NotesFragment : Fragment() {
             }
         })
 
+        notesViewModel.shouldClose.observe(viewLifecycleOwner, Observer {
+            if (it == true) { // Observed state is true.
+                activity?.supportFragmentManager?.popBackStack()
+            }
+        })
+
         return binding.root
     }
 }

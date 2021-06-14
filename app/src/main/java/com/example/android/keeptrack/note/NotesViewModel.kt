@@ -1,7 +1,10 @@
 package com.example.android.keeptrack.note
 
 import android.content.Context
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.android.keeptrack.database.Note
 import com.example.android.keeptrack.database.NoteDatabaseDao
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +21,11 @@ class NotesViewModel(
     val dbNotes = database.getNotesWithParentId(noteKey)
 
     var note: Note? = null
+
+    private val _shouldClose = MutableLiveData<Boolean?>()
+
+    val shouldClose: LiveData<Boolean?>
+        get() = _shouldClose
 
     init {
         viewModelScope.launch {
@@ -44,16 +52,44 @@ class NotesViewModel(
     }
 
     fun onAdd() {
-        showDialog(context) { a ->
+        showDialog(context) { text ->
             viewModelScope.launch {
-                add(a)
+                add(text)
             }
         }
     }
 
-    private suspend fun add(value: String) {
+    private suspend fun add(text: String) {
         withContext(Dispatchers.IO) {
-            database.insert(Note(text = value, parentId = noteKey))
+            database.insert(Note(text = text, parentId = noteKey))
+        }
+    }
+
+    fun onEdit(note: Note) {
+        showDialog(context, note.text) { text ->
+            viewModelScope.launch {
+                edit(note, text)
+            }
+        }
+    }
+
+    private suspend fun edit(note: Note, text: String) {
+        withContext(Dispatchers.IO) {
+            note.text = text
+            database.update(note)
+        }
+    }
+
+    fun onDelete(id: Long) {
+        viewModelScope.launch {
+            delete(id)
+            _shouldClose.postValue(true)
+        }
+    }
+
+    private suspend fun delete(id: Long) {
+        withContext(Dispatchers.IO) {
+            database.delete(id)
         }
     }
 }
