@@ -44,8 +44,8 @@ class NotesAdapter(val clickListener: NotesListener) : ListAdapter<DataItem,
                 holder.bind(clickListener, item.note)
             }
             is TextViewHolder -> {
-                val nightItem = getItem(position) as DataItem.Header
-                holder.bind("${nightItem.parentText ?: "Root"} context")
+                val noteItem = getItem(position) as DataItem.Header
+                holder.bind("${noteItem.parentText ?: "Root"} context")
             }
         }
     }
