@@ -1,19 +1,3 @@
-/*
- * Copyright 2018, The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.example.android.keeptrack.note
 
 import android.view.LayoutInflater
@@ -29,9 +13,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private val ITEM_VIEW_TYPE_HEADER = 0
-private val ITEM_VIEW_TYPE_ITEM = 1
-
+private const val ITEM_VIEW_TYPE_HEADER = 0
+private const val ITEM_VIEW_TYPE_ITEM = 1
 
 
 class NotesAdapter(val clickListener: NotesListener) : ListAdapter<DataItem,
@@ -75,33 +58,23 @@ class NotesAdapter(val clickListener: NotesListener) : ListAdapter<DataItem,
         }
     }
 
-//    class TextViewHolder(binding: Binding) : RecyclerView.ViewHolder(binding.root) { {
-//        companion object {
-//            fun from(parent: ViewGroup): TextViewHolder {
-//                val layoutInflater = LayoutInflater.from(parent.context)
-//                val view = layoutInflater.inflate(R.layout.header, parent, false)
-//                return TextViewHolder(view)
-//            }
-//        }
-//    }
+    class TextViewHolder private constructor(val binding: HeaderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        class TextViewHolder private constructor(val binding: HeaderBinding) :
-            RecyclerView.ViewHolder(binding.root) {
+        fun bind(text: String) {
+            binding.headerText = text
+            binding.executePendingBindings()
+        }
 
-            fun bind(text: String) {
-                binding.asdasdasd = text
-                binding.executePendingBindings()
-            }
+        companion object {
+            fun from(parent: ViewGroup): TextViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = HeaderBinding.inflate(layoutInflater, parent, false)
 
-            companion object {
-                fun from(parent: ViewGroup): TextViewHolder {
-                    val layoutInflater = LayoutInflater.from(parent.context)
-                    val binding = HeaderBinding.inflate(layoutInflater, parent, false)
-
-                    return TextViewHolder(binding)
-                }
+                return TextViewHolder(binding)
             }
         }
+    }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
@@ -130,12 +103,6 @@ class NotesAdapter(val clickListener: NotesListener) : ListAdapter<DataItem,
     }
 }
 
-/**
- * Callback for calculating the diff between two non-null items in a list.
- *
- * Used by ListAdapter to calculate the minumum number of changes between and old list and a new
- * list that's been passed to `submitList`.
- */
 class NoteDiffCallback : DiffUtil.ItemCallback<DataItem>() {
     override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
         return oldItem.id == newItem.id
