@@ -21,11 +21,11 @@ class NotesViewModel(
 
     init {
         viewModelScope.launch {
-            asd()
+            populateNote()
         }
     }
 
-    private suspend fun asd() {
+    private suspend fun populateNote() {
         withContext(Dispatchers.IO) {
             note = if (noteKey != null) database.getNoteWithIdEagerly(noteKey) else null
         }
